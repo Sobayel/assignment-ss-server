@@ -34,6 +34,13 @@ async function run() {
         res.send(result);
     })
 
+    app.get('/skillUp/:id', async(req, res) =>{
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)}
+        const result =await assignmentCollection.findOne(query);
+        res.send(result);
+    })
+
     app.post('/skillUp', async(req, res) =>{
         const newCraft = req.body;
         const result = await assignmentCollection.insertOne(newCraft);
@@ -46,7 +53,7 @@ async function run() {
         const result = await assignmentCollection.deleteOne(query);
         res.send(result);
     })
-    
+
     app.put('/skillUp/:id', async(req, res) =>{
         const id = req.params.id;
         const filter = {_id: new ObjectId(id)}
@@ -69,7 +76,7 @@ async function run() {
 
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
