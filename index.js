@@ -27,6 +27,26 @@ async function run() {
     // await client.connect();
 
     const assignmentCollection = client.db("skillUpDB").collection('skillUp');
+    const pdfCollection = client.db("skillUpDB").collection('pdf');
+
+    app.get('/pdf', async(req, res) =>{
+        const result =await pdfCollection.find().toArray();
+        res.send(result);
+    })
+
+    app.get('/pdf/:id', async(req, res) =>{
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)}
+        const result =await pdfCollection.findOne(query);
+        res.send(result);
+    })
+
+    app.post('/pdf', async(req, res) =>{
+        const newPdf = req.body;
+        const result = await pdfCollection.insertOne(newPdf);
+        res.send(result);
+    })
+
 
     app.get('/skillUp', async(req, res) =>{
         const result =await assignmentCollection.find().toArray();
@@ -41,8 +61,8 @@ async function run() {
     })
 
     app.post('/skillUp', async(req, res) =>{
-        const newCraft = req.body;
-        const result = await assignmentCollection.insertOne(newCraft);
+        const newCard = req.body;
+        const result = await assignmentCollection.insertOne(newCard);
         res.send(result);
     })
 
@@ -68,7 +88,7 @@ async function run() {
                 image: assignmentForm.image
             }
         }
-        const result = await assignmentCollection.updateOne(options, assignment, filter);
+        const result = await assignmentCollection.updateOne(filter, assignment,options );
         res.send(result);
     })
 
