@@ -46,6 +46,25 @@ async function run() {
         const result = await assignmentCollection.deleteOne(query);
         res.send(result);
     })
+    
+    app.put('/skillUp/:id', async(req, res) =>{
+        const id = req.params.id;
+        const filter = {_id: new ObjectId(id)}
+        const options = {upsert: true};
+        const assignmentForm = req.body;
+        const assignment = {
+            $set: {
+                name: assignmentForm.name,
+                mark: assignmentForm.mark,
+                date: assignmentForm.date,
+                description: assignmentForm.description,
+                difficulty: assignmentForm.difficulty,
+                image: assignmentForm.image
+            }
+        }
+        const result = await assignmentCollection.updateOne(options, assignment, filter);
+        res.send(result);
+    })
 
 
 
