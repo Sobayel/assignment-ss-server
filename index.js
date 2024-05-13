@@ -28,19 +28,25 @@ async function run() {
 
     const assignmentCollection = client.db("skillUpDB").collection('skillUp');
     const pdfCollection = client.db("skillUpDB").collection('pdf');
+    const SubmitAssignmentCollection = client.db("skillUpDB").collection('submitAssignment');
 
-    app.get('/pdf', async(req, res) =>{
-        const result =await pdfCollection.find().toArray();
+
+    app.get('/assignment/pending', async(req, res) =>{
+         const result =await pdfCollection.find({status:"pending"}).toArray();
+        console.log(result)
         res.send(result);
     })
 
-    app.get('/pdf/:id', async(req, res) =>{
-        const id = req.params.id;
-        const query = {_id: new ObjectId(id)}
-        const result =await pdfCollection.findOne(query);
+    app.get('/my-assignment', async(req, res) =>{
+        const email= req.query.email
+        const result = await SubmitAssignmentCollection.find({email }).toArray();
         res.send(result);
     })
-
+    app.post('/my-assignment', async(req, res) =>{
+        const data = req.body;
+        const result = await pdfCollection.insertOne(data);
+        res.send(result);
+    })
     app.post('/pdf', async(req, res) =>{
         const newPdf = req.body;
         const result = await pdfCollection.insertOne(newPdf);
