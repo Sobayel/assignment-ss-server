@@ -11,6 +11,8 @@ const corsData ={
   origin: [
     'http://localhost:5173',
     'http://localhost:5174',
+    'https://assignment-ss-e02b6.web.app',
+    'https://assignment-ss-e02b6.firebaseapp.com'
   ],
   credentials: true,
   optionSuccessStatus: 200,
